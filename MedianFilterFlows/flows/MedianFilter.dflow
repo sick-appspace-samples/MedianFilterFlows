@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<glue>
+    <info>
+        <usage>dflow</usage>
+    </info>
+    <blocks id="Main">
+        <block type="Provider" name="scanProv" event="Scan.Provider.File.OnNewScan(scan,sensordata)" x="-110.0" y="-214.95" width="183.0" height="100.0" path="Scan.Provider.File.OnNewScan">
+            <parameters>
+                <param name="File">
+                    <val>resources/TestScenario.xml</val>
+                </param>
+                <param name="DataSetID">
+                    <val>1</val>
+                </param>
+            </parameters>
+        </block>
+        <block type="Function" name="medianFilter" function="scan=Scan.MedianFilter.filter(scan)" x="-90.0" y="-64.95" width="120.0" height="100.0" path="Scan.MedianFilter.filter">
+            <parameters>
+                <param name="Width">
+                    <val>7</val>
+                </param>
+            </parameters>
+        </block>
+        <block type="Consumer" name="scanViewerMedian" function="View.view(iconics,decoration)" x="-89.0" y="241.05" width="120.0" height="100.0" path="View.view">
+            <parameters>
+                <param name="ID">
+                    <val>viewer3D</val>
+                </param>
+            </parameters>
+        </block>
+        <block type="Function" name="transformToPointCloud75" function="pointCloud=Scan.Transform.transformToPointCloud(scan)" x="-90.5" y="85.55" width="120.0" height="100.0" path="Scan.Transform.transformToPointCloud">
+            <parameters/>
+        </block>
+    </blocks>
+    <connections>
+        <link from="scanProv:scan" to="medianFilter:scan"/>
+        <link from="medianFilter:scan" to="transformToPointCloud75:scan"/>
+        <link from="transformToPointCloud75:pointCloud" to="scanViewerMedian:iconics"/>
+    </connections>
+</glue>
